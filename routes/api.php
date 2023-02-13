@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ForumController;
+use App\Http\Controllers\AuthenticateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::post('/register', [AuthenticateController::class, 'register'])->name('register');
+Route::post('/login', [AuthenticateController::class, 'login']);
+
+Route::middleware('auth:api')->group(function(){
+    Route::post('/logout', [AuthenticateController::class, 'logout']);
+    Route::resource('/forums', ForumController::class);
 });
