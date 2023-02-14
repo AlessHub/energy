@@ -41,4 +41,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    //Relationship to Forum
+    public function forums (){
+        return $this->hasMany(Forum::class);
+    }
 }
