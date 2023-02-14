@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\InformsController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AdviceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,12 +29,15 @@ Route::post('/register', [AuthenticateController::class, 'register'])->name('reg
 Route::post('/login', [AuthenticateController::class, 'login']);
 
 Route::middleware('auth:api')->group(function(){
+    Route::post('/login', [AuthenticateController::class, 'login']);
     Route::post('/logout', [AuthenticateController::class, 'logout']);
     Route::resource('/consumptions', ConsumptionController::class);
     Route::resource('/forums', ForumController::class);
     Route::resource('/comments', CommentController::class);
     Route::resource('/informs', InformsController::class);
-    Route::resource('/notifications', NotificationController::class);     
+    Route::resource('/notifications', NotificationController::class);   
+    Route::resource('/advices', AdviceController::class);
     
-
 });
+
+
