@@ -10,11 +10,16 @@ class Consumption extends Model
     use HasFactory;
     
     protected $fillable = [
-        'user_id',
+        
         'date',
         'electricMoney',
         'electricEnergy',
         'waterMoney',
         'waterEnergy',
     ];
+
+    //Relationship to User
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

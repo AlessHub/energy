@@ -45,6 +45,10 @@ class User extends Authenticatable
     public function forums (){
         return $this->hasMany(Forum::class);
     }
+    //Relationship to Consumptions
+    public function consumptions (){
+        return $this->hasMany(Consumption::class);
+    }
     //Relationship to Comments
     public function comments (){
         return $this->hasMany(Comment::class);

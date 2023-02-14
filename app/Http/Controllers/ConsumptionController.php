@@ -122,7 +122,7 @@ class ConsumptionController extends Controller
      * @param  \App\Models\Consumption  $consumption
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Consumption $consumption)
+    public function destroy($id)
     {
         //
         $consumption=Consumption::where('id',$id)->delete();
