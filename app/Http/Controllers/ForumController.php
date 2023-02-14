@@ -9,8 +9,10 @@ class ForumController extends Controller
 {
     public function index(Request $request)
     {
-        $user_id = $request->user()->id;
-        $Forums=Forum::where('user_id', $user_id)->get();
+        // $user_id = $request->user()->id;
+        // $Forums=Forum::where('user_id', $user_id)->get();
+        $Forums = Forum::all();
+
         return  response($Forums,201);
     }
 
