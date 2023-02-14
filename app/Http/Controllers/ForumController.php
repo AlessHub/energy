@@ -9,8 +9,10 @@ class ForumController extends Controller
 {
     public function index(Request $request)
     {
-        $user_id = $request->user()->id;
-        $Forums=Forum::where('user_id', $user_id)->get();
+        // $user_id = $request->user()->id;
+        // $Forums=Forum::where('user_id', $user_id)->get();
+        $Forums = Forum::all();
+
         return  response($Forums,201);
     }
 
@@ -28,13 +30,22 @@ class ForumController extends Controller
             'autor' => 'required',            
         ]);
 
-        Forum::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'cover' => $request->cover,            
-            'autor' => $request->autor,
-            'user_id' => $request->user()->id
-        ]);
+        // Forum::create([
+        //     'title' => $request->title,
+        //     'description' => $request->description,
+        //     'cover' => $request->cover,            
+        //     'autor' => $request->autor,
+        //     'user_id' => $request->user()->id,
+        // ]);
+        $forum = new Forum;
+        $forum->title = $request->title;
+        $forum->description = $request->description;
+        $forum->cover = $request->cover;
+        $forum->autor = $request->autor;
+        $forum->user_id = $request->user()->id;
+        $forum->save();
+
+        //
 
         return response([
             'message' => 'Forum created successfully'

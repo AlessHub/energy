@@ -16,4 +16,9 @@ class Forum extends Model
         'cover',
 
     ];
+
+    //Relationship to User
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
