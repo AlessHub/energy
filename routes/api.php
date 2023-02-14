@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ConsumptionController;
 use App\Http\Controllers\AuthenticateController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\InformsController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +26,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/register', [AuthenticateController::class, 'register'])->name('register');
 Route::post('/login', [AuthenticateController::class, 'login']);
-Route::resource('/consumptions', ConsumptionController::class);
 
 Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthenticateController::class, 'logout']);
+    Route::resource('/consumptions', ConsumptionController::class);
     Route::resource('/forums', ForumController::class);
+    Route::resource('/comments', CommentController::class);
+    Route::resource('/informs', InformsController::class);
+    Route::resource('/notifications', NotificationController::class);     
+    
+
 });

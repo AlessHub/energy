@@ -45,4 +45,19 @@ class User extends Authenticatable
     public function forums (){
         return $this->hasMany(Forum::class);
     }
+    //Relationship to Comments
+    public function comments (){
+        return $this->hasMany(Comment::class);
+    }
+
+    //Relationship to Informs
+    public function informs (){
+        return $this->hasMany(Informs::class);
+    }
+
+    //Relationship to 
+    public function notifications (){
+        return $this->hasMany(Informs::class);
+    }
+
 }
