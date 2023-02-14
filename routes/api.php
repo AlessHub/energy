@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ConsumptionController;
 use App\Http\Controllers\AuthenticateController;
+use App\Http\Controllers\AdviceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +29,8 @@ Route::resource('/consumptions', ConsumptionController::class);
 Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthenticateController::class, 'logout']);
     Route::resource('/forums', ForumController::class);
+    Route::resource('/advices', AdviceController::class);
+    
 });
+
+
