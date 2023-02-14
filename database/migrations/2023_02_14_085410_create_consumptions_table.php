@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('consumptions', function (Blueprint $table) {
             $table->id();
             
-            $table->unsignedBigInteger('id_User');
-            $table->foreign('id_User')->references('id')->on('users');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('date');
-            $table->decimal('electricMoney', 8, 2);
-            $table->decimal('electricEnergy', 8, 2);
-            $table->decimal('waterMoney', 8, 2);
-            $table->decimal('waterEnergy', 8, 2);
+            $table->integer('electricMoney');
+            $table->integer('electricEnergy');
+            $table->integer('waterMoney');
+            $table->integer('waterEnergy');
             
             $table->timestamps();
         });

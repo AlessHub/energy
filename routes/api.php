@@ -23,11 +23,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/register', [AuthenticateController::class, 'register'])->name('register');
-Route::post('/login', [AuthenticateController::class, 'login']);
-Route::resource('/consumptions', ConsumptionController::class);
 
 Route::middleware('auth:api')->group(function(){
+    Route::post('/login', [AuthenticateController::class, 'login']);
     Route::post('/logout', [AuthenticateController::class, 'logout']);
+    Route::resource('/consumptions', ConsumptionController::class);
     Route::resource('/forums', ForumController::class);
     Route::resource('/advices', AdviceController::class);
     

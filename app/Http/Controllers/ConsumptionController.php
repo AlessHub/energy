@@ -15,8 +15,8 @@ class ConsumptionController extends Controller
     public function index()
     {
         //
-        $consumption = Consumption::all();
-        return view('consumptions.index', compact('consumptions'));
+        $consumptions = Consumption::all();
+        return response($consumptions,200);
     }
 
     /**
@@ -27,7 +27,6 @@ class ConsumptionController extends Controller
     public function create()
     {
         //
-        return view('consumptions.create');
     }
 
     /**
@@ -39,11 +38,26 @@ class ConsumptionController extends Controller
     public function store(Request $request)
     {
         //
-        $consumption = new Consumption();
-        $consumption->fill($request->all());
+        $request->validate([
+            'date'=> 'required',
+            'electricMoney'=> 'required|max:8',
+            'electricEnergy'=> 'required|max:8',
+            'waterMoney'=> 'required|max:8',
+            'waterEnergy'=> 'required|max:8',
+        ]);
+        
+        $consumption = new Consumption;
+        $consumption->date = $request->date;
+        $consumption->electricMoney = $request->electricMoney;
+        $consumption->electricEnergy = $request->electricEnergy;
+        $consumption->waterMoney = $request->waterMoney;
+        $consumption->waterEnergy = $request->waterEnergy;
+        $consumption->user_id = $request->user()->id;
         $consumption->save();
         
-        return redirect()->route('consumptions.index');
+        return response([
+            'message' => 'Consumption created successfully' 
+        ], 201);
     }
 
     /**
@@ -55,7 +69,8 @@ class ConsumptionController extends Controller
     public function show(Consumption $consumption)
     {
         //
-        return view('consumptions.show',compact('consumptions'));
+        $consumption = Consumption::findOrFail($consumption->id);
+        return response($consumption, 200);
     }
 
     /**
@@ -67,7 +82,7 @@ class ConsumptionController extends Controller
     public function edit(Consumption $consumption)
     {
         //
-        return view('consumptions.edit', compact('consumptions'));
+       
     }
 
     /**
@@ -80,10 +95,25 @@ class ConsumptionController extends Controller
     public function update(Request $request, Consumption $consumption)
     {
         //
-        $consumption->fill($request->all());
+        $request->validate([
+            'date'=> 'required',
+            'electricMoney'=> 'required|max:8',
+            'electricEnergy'=> 'required|max:8',
+            'waterMoney'=> 'required|max:8',
+            'waterEnergy'=> 'required|max:8',
+        ]);
+        
+        $consumption->date = $request->date;
+        $consumption->electricMoney = $request->electricMoney;
+        $consumption->electricEnergy = $request->electricEnergy;
+        $consumption->waterMoney = $request->waterMoney;
+        $consumption->waterEnergy = $request->waterEnergy;
+        $consumption->user_id = $request->user()->id;
         $consumption->update();
-
-        return redirect()->route('consumptions.index');
+        
+        return response([
+            'message' => 'Consumption update successfully' 
+        ], 201);
     }
 
     /**
@@ -95,7 +125,9 @@ class ConsumptionController extends Controller
     public function destroy(Consumption $consumption)
     {
         //
-        $consumption->delete();
-        return redirect()->route('consumptions.index');
+        $consumption=Consumption::where('id',$id)->delete();
+        return response([
+            'message' => 'Consumption updateed successfull' 
+        ],200);
     }
 }
