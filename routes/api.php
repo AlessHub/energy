@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\AuthenticateController;
+use App\Http\Controllers\AdviceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +27,6 @@ Route::post('/login', [AuthenticateController::class, 'login']);
 Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthenticateController::class, 'logout']);
     Route::resource('/forums', ForumController::class);
+    Route::resource('/advices', AdviceController::class);
+    
 });
