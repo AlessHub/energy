@@ -47,7 +47,7 @@ class User extends Authenticatable
     }
     //Relationship to Comments
     public function comments (){
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class);       
     }
 
     //Relationship to Informs

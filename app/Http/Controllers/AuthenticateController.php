@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthenticateController extends Controller
 {
+    public function index ()
+    {
+        $users = User::all();
+        return  response($users,201);
+
+    }
+    
+    
     public function register(Request $request)
     {
         $request->validate([
@@ -65,5 +73,47 @@ class AuthenticateController extends Controller
         return response([
             'message'=>'Logged out successfully'
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $Comment=User::findOrFail($id);
+        $Comment->update([
+            'name' => $request->name,
+            'password' => $request->password,
+            
+            
+        ]);
+
+        return response([
+            'message'=>'Your data has been updated successfully'
+        ],201);
+
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->validate([
+            
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if(!$user|| !Hash::check($request->password,$user->password)) {
+            return response([
+                'message' => 'The provided credentials are incorrect.',
+            ]);
+        } else{
+
+            $request->user()->delete();
+
+            return response([
+            'message'=>'Deleted successfully'
+            ]);
+        }
+
+        
     }
 }
