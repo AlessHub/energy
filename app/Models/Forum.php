@@ -21,4 +21,9 @@ class Forum extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    //Relationship to comment
+    public function commemts (){
+        return $this->hasMany(Comment::class);
+    }
 }

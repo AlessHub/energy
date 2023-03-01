@@ -18,4 +18,8 @@ class Comment extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+    //Relationship to Forum
+    public function forum() {
+        return $this->belongsTo(Forum::class);
+    }
 }

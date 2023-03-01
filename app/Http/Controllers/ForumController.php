@@ -30,22 +30,21 @@ class ForumController extends Controller
             'autor' => 'required',            
         ]);
 
-        // Forum::create([
-        //     'title' => $request->title,
-        //     'description' => $request->description,
-        //     'cover' => $request->cover,            
-        //     'autor' => $request->autor,
-        //     'user_id' => $request->user()->id,
-        // ]);
+        
         $forum = new Forum;
         $forum->title = $request->title;
         $forum->description = $request->description;
-        $forum->cover = $request->cover;
+        // $forum->cover = $request->cover;
         $forum->autor = $request->autor;
         $forum->user_id = $request->user()->id;
         $forum->save();
 
         //
+        if($request->hasFile('cover')) {
+            $forum['cover'] = $request->file('cover')->store('images', 'public');
+        }
+
+        Forum::create($forum);
 
         return response([
             'message' => 'Forum created successfully'
@@ -65,9 +64,14 @@ class ForumController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'cover' => $request->cover,
-            'autor' => $request->autor,
-            
+            'autor' => $request->autor,            
         ]);
+
+        if($request->hasFile('cover')) {
+            $Forum['cover'] = $request->file('cover')->store('images', 'public');
+        }
+
+        $Forum->update($Forum);
 
         return response([
             'message'=>'Forum updated successfully'

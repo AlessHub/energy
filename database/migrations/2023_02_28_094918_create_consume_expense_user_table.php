@@ -13,18 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('consumptions', function (Blueprint $table) {
+        Schema::create('consume_expense_user', function (Blueprint $table) {
             $table->id();
-            
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->string('date');
-            $table->integer('electricMoney');
-            $table->integer('electricEnergy');
-            $table->integer('waterMoney');
-            $table->integer('waterEnergy');
-            
+            $table->unsignedBigInteger('consume_expense_id');
             $table->timestamps();
+        
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
+        
+            $table->foreign('consume_expense_id')
+                  ->references('id')
+                  ->on('consume_expenses')
+                  ->onDelete('cascade');
         });
     }
 
@@ -35,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('consumptions');
+        //
     }
 };

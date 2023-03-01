@@ -60,4 +60,13 @@ class User extends Authenticatable
         return $this->hasMany(Informs::class);
     }
 
+    //Relationship to 
+    public function electricityExpenses()
+    {
+        return $this->belongsToMany(ConsumeExpense::class, 'consume_expense_user')
+            ->using(ConsumeExpenseUser::class)
+            ->withPivot(['elecExpense', 'waterExpense', 'year', 'month']);
+    }
+
+    
 }
