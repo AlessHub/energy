@@ -1,6 +1,8 @@
 <?php
 
 namespace Database\Factories;
+use App\Models\Forum;
+use App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,7 +19,10 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            //
+        'content' => fake()->sentence(),
+        'autor' => fake()->name(),
+        'user_id' => \App\Models\User::inRandomOrder()->first()->id,
+        'forum_id' => \App\Models\Forum::inRandomOrder()->first()->id,
         ];
     }
 }

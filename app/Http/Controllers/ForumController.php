@@ -22,34 +22,33 @@ class ForumController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required|max:255',            
-            'cover' => 'required',
-            'autor' => 'required',            
-        ]);
+{
+    $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'required|max:255',            
+        'cover' => 'required',
+        'autor' => 'required',            
+    ]);
 
-        
-        $forum = new Forum;
-        $forum->title = $request->title;
-        $forum->description = $request->description;
-        // $forum->cover = $request->cover;
-        $forum->autor = $request->autor;
-        $forum->user_id = $request->user()->id;
-        $forum->save();
+    $attributes = [
+        'title' => $request->title,
+        'description' => $request->description,
+        'cover' => $request->cover,
+        'autor' => $request->autor,
+        'user_id' => $request->user()->id,
+    ];
 
-        //
-        if($request->hasFile('cover')) {
-            $forum['cover'] = $request->file('cover')->store('images', 'public');
-        }
-
-        Forum::create($forum);
-
-        return response([
-            'message' => 'Forum created successfully'
-        ],201);
+    if ($request->hasFile('cover')) {
+        $attributes['cover'] = $request->file('cover')->store('images', 'public');
     }
+
+    Forum::create($attributes);
+
+    return response([
+        'message' => 'Forum created successfully'
+    ], 201);
+}
+
 
     public function show($id)
     {
