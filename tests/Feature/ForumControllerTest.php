@@ -225,11 +225,11 @@ class ForumControllerTest extends TestCase
             'description' => $formData['description'],
             'autor' => $formData['autor'],
             'user_id' => $user->id,
-            'cover' => $forum['cover']
+            'cover' => $formData['cover']
         ]);
     }
 
-    public function test_user_can_only_delete_own_forum_using_passport()
+    public function test_user_can_only_delete_own_forum()
 {
 
     // Creamos dos usuarios, y un foro con el usuario 1

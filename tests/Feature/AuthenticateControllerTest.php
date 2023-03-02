@@ -1,46 +1,50 @@
 <?php
 
 namespace Tests\Feature;
+
 use Laravel\Passport\ClientRepository;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Hash;
+
 
 class AuthenticateControllerTest extends TestCase
 {
     use DatabaseTransactions;
 
+
     /** @test */
 
     public function test_index_returns_authenticated_user()
-{
-    
-    $user = User::factory()->create();
-    $accessToken = $user->createToken('test-token')->accessToken;
-   
-    $response = $this->get('/api/user', [
-        'Authorization' => 'Bearer ' . $accessToken,
-    ]);
-  
-    $response->assertStatus(200);
+    {
 
-    $response->assertJsonFragment([
-        'email' => $user->email,
-    ]);
+        $user = User::factory()->create();
+        $accessToken = $user->createToken('test-token')->accessToken;
 
-    
-}
+        $response = $this->get('/api/user', [
+            'Authorization' => 'Bearer ' . $accessToken,
+        ]);
 
-/** @test */
+        $response->assertStatus(200);
 
-public function test_user_can_register_and_get_access_token()
+        $response->assertJsonFragment([
+            'email' => $user->email,
+        ]);
+    }
+
+    /** @test */
+
+    public function test_user_can_register_and_get_access_token()
     {
         // Necesitamos un cliente para utilizar Laravel passport
         $clientRepository = new ClientRepository();
         $client = $clientRepository->createPersonalAccessClient(
-            null, 'Test Personal Access Client', 'http://localhost'
+            null,
+            'Test Personal Access Client',
+            'http://localhost'
         );
 
         // Creamos un usuario falso
@@ -53,11 +57,11 @@ public function test_user_can_register_and_get_access_token()
             'password' => 'password'
         ]);
 
-        
+
         $response->assertStatus(200);
         $response->assertJsonStructure(['token']);
 
-        
+
         $this->assertDatabaseHas('users', [
             'email' => $user->email
         ]);
@@ -69,5 +73,60 @@ public function test_user_can_register_and_get_access_token()
         $this->assertTrue($client->personal_access_client);
         $this->assertEquals($user->id, auth()->id());
     }
+
+    public function test_login_returns_token()
+{
+    $clientRepository = new ClientRepository();
+    $client = $clientRepository->createPersonalAccessClient(
+        null,
+        'Test Personal Access Client',
+        'http://localhost'
+    );
+
+    // Si no se utiliza el metodo hash, el test dará error...
+    $user = User::factory()->create([
+        'name' => 'Alessandro',
+        'email' => 'test@example.com',
+        'password' => Hash::make('password')
+    ]);
+
+    // Con el usuario creado, hacemos login(post)
+    $response = $this->postJson('/api/login', [
+        'email' => 'test@example.com',
+        'password' => 'password'
+    ]);
+
+    $response->assertStatus(200);
+
+    // Digamos que es un console.log, para ver la respuesta del login, si el test diese error
+    // quitariamos el comentario para asegurar que nos da login success o error
+    // dd($response->json());
+
+    $token = $response->json('token');
+    $this->assertNotNull($token);
+
+    // Make a request to the /api/user endpoint with the token and assert the response
+    $this->actingAs($user)
+        ->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])
+        ->get('/api/user')
+        ->assertStatus(200)
+        ->assertJsonFragment([
+            'email' => $user->email,
+        ])
+        ->assertJsonStructure([
+            'id',
+            'name',
+            'email',
+            'email_verified_at',
+            'created_at',
+            'updated_at'
+        ]);
+}
+
+
+
 
 }

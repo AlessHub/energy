@@ -72,6 +72,7 @@ class ForumController extends Controller
         'title' => $request->title,
         'description' => $request->description,
         'autor' => $request->autor,
+        'cover' => $request->cover,
     ];
 
     if ($request->hasFile('cover')) {
