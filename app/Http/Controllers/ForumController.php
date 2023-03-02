@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Forum;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ForumController extends Controller
 {
@@ -56,34 +57,47 @@ class ForumController extends Controller
         return response($Forum,201);
     }
 
+    
+
     public function update(Request $request, $id)
-    {
-        $Forum=Forum::findOrFail($id);
-        $Forum->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'cover' => $request->cover,
-            'autor' => $request->autor,            
-        ]);
+{
+    $forum = Forum::findOrFail($id);
+    
+    // Comprobamos que quien hace el update request es el usuario en sí
+    if ($request->user()->id !== $forum->user_id) {
+        return response(['message' => 'You are not authorized to update this forum post'], 403);
+    }
+    
+    $attributes = [
+        'title' => $request->title,
+        'description' => $request->description,
+        'autor' => $request->autor,
+    ];
 
-        if($request->hasFile('cover')) {
-            $Forum['cover'] = $request->file('cover')->store('images', 'public');
-        }
-
-        $Forum->update($Forum);
-
-        return response([
-            'message'=>'Forum updated successfully'
-        ],201);
-
+    if ($request->hasFile('cover')) {
+        $attributes['cover'] = $request->file('cover')->store('images', 'public');
     }
 
-    public function destroy($id)
-    {
-        $Forum=Forum::where('id',$id)->delete();
+    $forum->update($attributes);
 
-        return response([
-            'message'=>'Forum deleted successfully'
-        ],201);
+    return response([
+        'message'=>'Forum updated successfully'
+    ], 201);
+
+}
+
+
+public function destroy($id)
+{
+    $forum = Forum::findOrFail($id);
+
+    if ($forum->user_id != Auth::id()) {
+        return response()->json(['message' => 'Forbidden'], 403);
     }
+
+    $forum->delete();
+
+    return response()->json(['message' => 'Forum deleted successfully'], 204);
+}
+
 }
