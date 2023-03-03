@@ -31,24 +31,25 @@ class ForumController extends Controller
         ]);
 
         
-        $forum = new Forum;
-        $forum->title = $request->title;
-        $forum->description = $request->description;
-        // $forum->cover = $request->cover;
-        $forum->autor = $request->autor;
-        $forum->user_id = $request->user()->id;
-        $forum->save();
+       // Subida y almacenamiento de la covern
+       $cover = $request->file('cover');
+       $coverName = time() . '.' . $cover->getClientOriginalExtension();
+       $coverPath = 'covers/forums/';
+       $cover->move(public_path($coverPath), $coverName);
 
-        //
-        if($request->hasFile('cover')) {
-            $forum['cover'] = $request->file('cover')->store('images', 'public');
-        }
+   
+   // Creación y almacenamiento de la imagen
+$forum = new Forum();
+$forum->title = $request->title;
+$forum->description = $request->description;
+// $forum->user_id = auth()->id();
+$forum->cover = $coverPath . $coverName;
+$forum->autor = $request->autor;
+// $forum->category = $request->category;
+// $forum->price = $request->price;
+$forum->save();
 
-        Forum::create($forum);
-
-        return response([
-            'message' => 'Forum created successfully'
-        ],201);
+return response()->json($forum, 201);
     }
 
     public function show($id)
@@ -68,7 +69,7 @@ class ForumController extends Controller
         ]);
 
         if($request->hasFile('cover')) {
-            $Forum['cover'] = $request->file('cover')->store('images', 'public');
+            $Forum['cover'] = $request->file('cover')->store('covers', 'public');
         }
 
         $Forum->update($Forum);

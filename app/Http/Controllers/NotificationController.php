@@ -26,7 +26,6 @@ class NotificationController extends Controller
         $request->validate([
             'content' => 'required',
             'type' => 'required',            
-                                   
         ]);
 
         // notification::create([
