@@ -17,12 +17,6 @@ class ForumControllerTest extends TestCase
     use DatabaseTransactions;
     use WithFaker;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        Artisan::call('passport:install');
-    }
-
 
     /** @test */
     public function test_non_authenticated_user_cannot_access_list_of_forums()

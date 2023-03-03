@@ -107,14 +107,11 @@ class AuthenticateController extends Controller
         $Comment->update([
             'name' => $request->name,
             'password' => $request->password,
-            
-            
         ]);
 
         return response([
             'message'=>'Your data has been updated successfully'
         ],201);
-
     }
 
     public function destroy(Request $request)
@@ -139,7 +136,5 @@ class AuthenticateController extends Controller
             'message'=>'Deleted successfully'
             ]);
         }
-
-        
     }
 }
