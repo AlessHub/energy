@@ -77,12 +77,12 @@ class AuthenticateControllerTest extends TestCase
         $this->assertEquals($user->id, auth()->id());
     }
 
-/** @test */
+    /** @test */
 
     public function test_login_returns_token()
     {
 
-        // Si no se utiliza el metodo hash, el test dará error...
+        // Si no se utiliza el metodo hash, el test dará error... porque hay un check en el controlador
         $user = User::factory()->create([
             'name' => 'Alessandro',
             'email' => 'test@example.com',
@@ -127,28 +127,67 @@ class AuthenticateControllerTest extends TestCase
             ]);
     }
 
-/** @test */
+    /** @test */
 
     public function test_logout_revokes_access_token()
-{
-   
-    $user = User::factory()->create();
+    {
 
-    $accessToken = $user->createToken('Test Token')->accessToken;
-    
-    $headers = [
-        'Authorization' => 'Bearer ' . $accessToken
-    ];
-   
-    $response = $this->post('/api/logout', [], $headers);
+        $user = User::factory()->create();
 
-    $response->assertStatus(200);
+        $accessToken = $user->createToken('Test Token')->accessToken;
 
-    // la propiedad revoked es un booleano, entonces si el numero es 1(al cual estamos haciendo assert)
-    // significa que el token ha sido eliminado con éxito, si se pone 0, el test debería de fallar
+        $headers = [
+            'Authorization' => 'Bearer ' . $accessToken
+        ];
 
-    $this->assertEquals(1, $user->tokens()->first()->revoked);
-}
+        $response = $this->post('/api/logout', [], $headers);
 
+        $response->assertStatus(200);
 
+        // la propiedad revoked es un booleano, entonces si el numero es 1(al cual estamos haciendo assert)
+        // significa que el token ha sido eliminado con éxito, si se pone 0, el test debería de fallar
+
+        $this->assertEquals(1, $user->tokens()->first()->revoked);
+    }
+
+    public function test_update_user()
+    {
+        $user = User::factory()->create();
+        $accessToken = $user->createToken('Test Token')->accessToken;
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Accept' => 'application/json'
+        ])->json('PUT', '/api/user/' . $user->id, [
+            'name' => 'New Name',
+            'password' => 'newpassword'
+        ]);
+        // como anteriomente, usamos este comando para ver la respuesta, si fallase quitamos el comentario para
+        // tener más contexto del error
+        // dd($response->json());
+        $response->assertStatus(201);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'name' => 'New Name'
+        ]);
+    }
+
+    public function test_destroy_user()
+    {
+        $user = User::factory()->create();
+        $accessToken = $user->createToken('Test Token')->accessToken;
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Accept' => 'application/json'
+        ])
+            ->json('DELETE', '/api/delete', [
+                'email' => $user->email,
+                'password' => 'password'
+            ]);
+        $response->assertRedirect('/home');
+        $this->assertEquals(1, User::where('id', $user->id)->delete());
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);
+    }
 }
