@@ -13,7 +13,7 @@ class Forum extends Model
         'title',
         'description',
         'autor',
-        'cover',
+        'image',
 
     ];
 

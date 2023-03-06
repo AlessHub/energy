@@ -26,30 +26,29 @@ class ForumController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'description' => 'required|max:255',            
-            'cover' => 'required',
+            'image' => 'required',
             'autor' => 'required',            
         ]);
 
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = 'covers/forums/';
+            $image->move(public_path($imagePath), $imageName);
         
-       // Subida y almacenamiento de la covern
-       $cover = $request->file('cover');
-       $coverName = time() . '.' . $cover->getClientOriginalExtension();
-       $coverPath = 'covers/forums/';
-       $cover->move(public_path($coverPath), $coverName);
-
-   
-   // Creación y almacenamiento de la imagen
-$forum = new Forum();
-$forum->title = $request->title;
-$forum->description = $request->description;
-// $forum->user_id = auth()->id();
-$forum->cover = $coverPath . $coverName;
-$forum->autor = $request->autor;
-// $forum->category = $request->category;
-// $forum->price = $request->price;
-$forum->save();
-
-return response()->json($forum, 201);
+            // Creación y almacenamiento del foro
+            $forum = new Forum();
+            $forum->title = $request->title;
+            $forum->description = $request->description;
+            $forum->image = $imagePath . $imageName;
+            $forum->user_id = auth()->id();
+            $forum->autor = $request->autor;
+            $forum->save();
+        
+            return response()->json($forum, 201);
+        } else {
+            return response()->json(['message' => 'Debe proporcionar una imagen válida'], 400);
+        }
     }
 
     public function show($id)
@@ -64,12 +63,12 @@ return response()->json($forum, 201);
         $Forum->update([
             'title' => $request->title,
             'description' => $request->description,
-            'cover' => $request->cover,
+            'image' => $request->image,
             'autor' => $request->autor,            
         ]);
 
-        if($request->hasFile('cover')) {
-            $Forum['cover'] = $request->file('cover')->store('covers', 'public');
+        if($request->hasFile('image')) {
+            $Forum['image'] = $request->file('image')->store('covers', 'public');
         }
 
         $Forum->update($Forum);

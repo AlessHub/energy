@@ -53,17 +53,17 @@ class AuthenticateController extends Controller
             return response([
                 'message' => 'The provided credentials are incorrect.',
             ]);
-        } else{
+        } 
+        else{
+
+            $token = $user->createToken('auth_token')->accessToken;
             return response([
                 'message' => 'success logged in',
+                'token' => $token,
             ]);
         }
-        $token = $user->createToken('auth_token')->accessToken;
 
-        // return $user->createToken($request->device_name)->plainTextToken;
-        return Response([
-            'token' => $token,
-        ]);
+        
     }
 
     public function logout(Request $request)
@@ -115,5 +115,15 @@ class AuthenticateController extends Controller
         }
 
         
+    }
+
+    public function validateToken(Request $request,$th)
+    {
+        try {
+            $user = $request->user();
+            return response(['isValid' => true, 'message' => 'valid token'], 200);
+        } catch (\Throwable $th) {
+            return response(['isValid' => false, 'message' => 'invalid token'], 401);
+        }
     }
 }
