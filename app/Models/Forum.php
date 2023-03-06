@@ -15,10 +15,8 @@ class Forum extends Model
         'title',
         'description',
         'autor',
-        'cover',
         'user_id'
-        
-
+        'image',
     ];
 
     //Relationship to User

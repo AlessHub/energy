@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class AdviceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $Advices=Advice::all();
         return  response($Advices,201);

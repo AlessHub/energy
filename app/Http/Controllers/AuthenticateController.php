@@ -51,13 +51,16 @@ class AuthenticateController extends Controller
             return response([
                 'message' => 'The provided credentials are incorrect.',
             ]);
-        } else {
+        } 
+        else{
+
             $token = $user->createToken('auth_token')->accessToken;
-    
             return response([
+                'message' => 'success logged in',
                 'token' => $token,
             ]);
         }
+
     }
     
 
@@ -135,6 +138,16 @@ class AuthenticateController extends Controller
             return response([
             'message'=>'Deleted successfully'
             ]);
+        }
+    }
+
+    public function validateToken(Request $request,$th)
+    {
+        try {
+            $user = $request->user();
+            return response(['isValid' => true, 'message' => 'valid token'], 200);
+        } catch (\Throwable $th) {
+            return response(['isValid' => false, 'message' => 'invalid token'], 401);
         }
     }
 }

@@ -23,24 +23,33 @@ class ForumController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'required|max:255',            
-        'cover' => 'required',
-        'autor' => 'required',            
-    ]);
+    {
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required|max:255',            
+            'image' => 'required',
+            'autor' => 'required',            
+        ]);
 
-    $attributes = [
-        'title' => $request->title,
-        'description' => $request->description,
-        'cover' => $request->cover,
-        'autor' => $request->autor,
-        'user_id' => $request->user()->id,
-    ];
-
-    if ($request->hasFile('cover')) {
-        $attributes['cover'] = $request->file('cover')->store('images', 'public');
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = 'covers/forums/';
+            $image->move(public_path($imagePath), $imageName);
+        
+            // Creación y almacenamiento del foro
+            $forum = new Forum();
+            $forum->title = $request->title;
+            $forum->description = $request->description;
+            $forum->image = $imagePath . $imageName;
+            $forum->user_id = auth()->id();
+            $forum->autor = $request->autor;
+            $forum->save();
+        
+            return response()->json($forum, 201);
+        } else {
+            return response()->json(['message' => 'Debe proporcionar una imagen válida'], 400);
+        }
     }
 
     Forum::create($attributes);
@@ -80,6 +89,7 @@ class ForumController extends Controller
     }
 
     $forum->update($attributes);
+
 
     return response([
         'message'=>'Forum updated successfully'
