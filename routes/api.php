@@ -59,9 +59,9 @@ Route::middleware('auth:api')->group(function(){
     //notifications -> eliminar y ver
     Route::get('/notifications', [NotificationController::class, 'index']);   
     //advices -> ver
+    Route::put('/user/{id}', [AuthenticateController::class, 'update']); 
     Route::get('/advices',[AdviceController::class, 'index'] );  
     Route::post('/advices',[AdviceController::class, 'store'] ); 
-    
     // Route::resource('/advices', AdviceController::class);
 });
 

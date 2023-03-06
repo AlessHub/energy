@@ -14,6 +14,10 @@ class Comment extends Model
         'autor',
     ];
 
+    protected $attributes = [
+        'user_id' => null,
+    ];
+
     //Relationship to User
     public function user() {
         return $this->belongsTo(User::class);

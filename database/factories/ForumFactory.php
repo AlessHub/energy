@@ -1,6 +1,8 @@
 <?php
 
 namespace Database\Factories;
+use App\Models\Forum;
+use App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,7 +19,11 @@ class ForumFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->text,
+            'cover' => $this->faker->imageUrl,
+            'autor' => $this->faker->name,
+            'user_id' => User::factory(),
         ];
     }
 }
