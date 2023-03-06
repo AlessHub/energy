@@ -52,12 +52,6 @@ class ForumController extends Controller
         }
     }
 
-    Forum::create($attributes);
-
-    return response([
-        'message' => 'Forum created successfully'
-    ], 201);
-}
 
 
     public function show($id)
@@ -81,6 +75,7 @@ class ForumController extends Controller
         'title' => $request->title,
         'description' => $request->description,
         'autor' => $request->autor,
+        'image' => $request->image,
         'cover' => $request->cover,
     ];
 

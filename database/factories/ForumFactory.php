@@ -21,7 +21,7 @@ class ForumFactory extends Factory
         return [
             'title' => $this->faker->sentence,
             'description' => $this->faker->text,
-            'cover' => $this->faker->imageUrl,
+            'image' => $this->faker->image(public_path('covers/forums'), 640, 480, null, false),
             'autor' => $this->faker->name,
             'user_id' => User::factory(),
         ];
