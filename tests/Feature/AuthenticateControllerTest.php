@@ -150,7 +150,7 @@ class AuthenticateControllerTest extends TestCase
         $this->assertEquals(1, $user->tokens()->first()->revoked);
     }
 
-    public function test_update_user()
+    public function test_user_can_be_updated()
     {
         $user = User::factory()->create();
         $accessToken = $user->createToken('Test Token')->accessToken;
@@ -173,7 +173,9 @@ class AuthenticateControllerTest extends TestCase
         ]);
     }
 
-    public function test_destroy_user()
+    /** @test */
+
+    public function test_user_can_be_destroyed()
     {
         $user = User::factory()->create();
         $accessToken = $user->createToken('Test Token')->accessToken;

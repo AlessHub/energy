@@ -49,6 +49,8 @@ class ForumControllerTest extends TestCase
         ]);
     }
 
+    /** @test */
+
     public function test_non_authenticated_user_cannot_access_forum()
     {
         $forum = Forum::factory()->create();
@@ -89,6 +91,8 @@ class ForumControllerTest extends TestCase
         ]);
     }
 
+    /** @test */
+
     public function test_non_authenticated_users_cannot_create_forums()
     {
         $response = $this->postJson(route('forums.store'), [
@@ -103,6 +107,7 @@ class ForumControllerTest extends TestCase
 
 
     /** @test */
+
     public function it_requires_a_cover_to_create_a_forum_for_an_authenticated_user()
     {
         $user = User::factory()->create();
@@ -122,6 +127,7 @@ class ForumControllerTest extends TestCase
 
 
     /** @test */
+
     public function test_store_forum_without_uploading_image()
     {
         $user = User::factory()->create();
@@ -156,6 +162,7 @@ class ForumControllerTest extends TestCase
     //uploadFile me da error, de momento seguiré con el update y el delete
 
     /** @test */
+
     public function test_user_can_only_update_own_forum()
 {
     $user1 = User::factory()->create();
@@ -191,6 +198,7 @@ class ForumControllerTest extends TestCase
 
 
     /** @test */
+
     public function test_update_forum_without_uploading_image()
     {
         $user = User::factory()->create();
@@ -222,6 +230,8 @@ class ForumControllerTest extends TestCase
             'cover' => $formData['cover']
         ]);
     }
+    
+    /** @test */
 
     public function test_user_can_only_delete_own_forum()
 {

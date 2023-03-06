@@ -12,6 +12,7 @@ class ForumTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
+
     public function it_belongs_to_a_user()
     {
         $user = User::factory()->create();
@@ -22,6 +23,7 @@ class ForumTest extends TestCase
     }
 
     /** @test */
+
     public function it_has_many_comments()
 {
     $user = User::factory()->create();
@@ -33,7 +35,4 @@ class ForumTest extends TestCase
     $this->assertTrue($forum->comments->contains($comment1));
     $this->assertTrue($forum->comments->contains($comment2));
 }
-
-
-
 }
