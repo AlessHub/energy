@@ -17,7 +17,9 @@ class AdviceFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'content' => fake()->sentence(),
+            'value' => fake()->numberBetween(1, 10),
+            'type' => fake()->randomElement(['positive', 'negative']),
         ];
     }
 }

@@ -15,7 +15,7 @@ class Forum extends Model
         'title',
         'description',
         'autor',
-        'user_id'
+        'user_id',
         'image',
     ];
 
