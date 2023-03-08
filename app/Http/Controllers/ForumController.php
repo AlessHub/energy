@@ -74,11 +74,12 @@ class ForumController extends Controller
         'title' => $request->title,
         'description' => $request->description,
         'autor' => $request->autor,
-        'cover' => $request->cover,
+        'image' => $request->image,
+        'image' => $request->image,
     ];
 
-    if ($request->hasFile('cover')) {
-        $attributes['cover'] = $request->file('cover')->store('images', 'public');
+    if ($request->hasFile('image')) {
+        $attributes['image'] = $request->file('image')->store('images', 'public');
     }
 
     $forum->update($attributes);
