@@ -1,6 +1,8 @@
 <?php
 
 namespace Database\Factories;
+use App\Models\Advice;
+use Faker\Generator as Faker;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,7 +19,9 @@ class AdviceFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'content' => fake()->sentence(),
+            'value' => fake()->numberBetween(1, 10),
+            'type' => fake()->randomElement(['positive', 'negative']),
         ];
     }
 }

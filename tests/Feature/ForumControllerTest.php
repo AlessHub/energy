@@ -232,7 +232,6 @@ class ForumControllerTest extends TestCase
             'description' => $formData['description'],
             'autor' => $formData['autor'],
             'user_id' => $user->id,
-            'image' => $formData['image']
         ]);
     }
     

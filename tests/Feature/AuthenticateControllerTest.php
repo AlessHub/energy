@@ -106,7 +106,7 @@ class AuthenticateControllerTest extends TestCase
         $token = $response->json('token');
         $this->assertNotNull($token);
 
-        // Make a request to the /api/user endpoint with the token and assert the response
+        // Hace un get y assert mirando que tenga la misma estructura
         $this->actingAs($user)
             ->withHeaders([
                 'Authorization' => 'Bearer ' . $token,
