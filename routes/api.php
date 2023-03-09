@@ -50,8 +50,9 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthenticateController::class, 'logout']);    
     //consumptions -> eliminar, editar, ver, crear
     Route::resource('/consumptions', ConsumptionController::class);
-    //forums -> eliminar, editar, ver, crear
-    Route::resource('/forums', ForumController::class);
+    //forums ->  ver, crear    
+    Route::get('/forums', [ForumController::class, 'index']); 
+    Route::post('/forums', [ForumController::class, 'store']); 
     //comments ->eliminar, editar, ver, crear
     Route::resource('/comments', CommentController::class);
     //informs -> ver
