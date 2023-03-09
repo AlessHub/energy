@@ -38,18 +38,16 @@ class AuthenticateController extends Controller
         ]);
 
     }
-
     public function login(Request $request)
     {
         $request->validate([
-            
             'email' => 'required',
             'password' => 'required'
         ]);
-
+    
         $user = User::where('email', $request->email)->first();
-
-        if(!$user|| !Hash::check($request->password,$user->password)) {
+    
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
                 'message' => 'The provided credentials are incorrect.',
             ]);
@@ -63,8 +61,39 @@ class AuthenticateController extends Controller
             ]);
         }
 
-        
     }
+    
+
+    // login antiguo, lo dejo en caso de que al hacer merge se rompa, está actualizado para que los tests funcionen
+    // correctamente, y no debería de dar ningun problema
+
+
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+            
+    //         'email' => 'required',
+    //         'password' => 'required'
+    //     ]);
+
+    //     $user = User::where('email', $request->email)->first();
+
+    //     if(!$user|| !Hash::check($request->password,$user->password)) {
+    //         return response([
+    //             'message' => 'The provided credentials are incorrect.',
+    //         ]);
+    //     } else{
+    //         return response([
+    //             'message' => 'success logged in',
+    //         ]);
+    //     }
+    //     $token = $user->createToken('auth_token')->accessToken;
+
+    //     // return $user->createToken($request->device_name)->plainTextToken;
+    //     return Response([
+    //         'token' => $token,
+    //     ]);
+    // }
 
     public function logout(Request $request)
     {
@@ -81,14 +110,11 @@ class AuthenticateController extends Controller
         $Comment->update([
             'name' => $request->name,
             'password' => $request->password,
-            
-            
         ]);
 
         return response([
             'message'=>'Your data has been updated successfully'
         ],201);
-
     }
 
     public function destroy(Request $request)
@@ -113,8 +139,6 @@ class AuthenticateController extends Controller
             'message'=>'Deleted successfully'
             ]);
         }
-
-        
     }
 
     public function validateToken(Request $request,$th)

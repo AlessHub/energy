@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Database\Factories\ForumFactory;
+
 
 class Forum extends Model
 {
@@ -13,8 +15,8 @@ class Forum extends Model
         'title',
         'description',
         'autor',
+        'user_id',
         'image',
-
     ];
 
     //Relationship to User
@@ -23,7 +25,12 @@ class Forum extends Model
     }
 
     //Relationship to comment
-    public function commemts (){
+    public function comments (){
         return $this->hasMany(Comment::class);
+    }
+
+    protected static function newFactory()
+    {
+        return ForumFactory::new();
     }
 }
