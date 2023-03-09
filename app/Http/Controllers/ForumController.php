@@ -50,14 +50,15 @@ class ForumController extends Controller
         } else {
             return response()->json(['message' => 'Debe proporcionar una imagen válida'], 400);
         }
+        
+
+
+
+        
     }
 
-    Forum::create($attributes);
+   
 
-    return response([
-        'message' => 'Forum created successfully'
-    ], 201);
-}
 
 
     public function show($id)
@@ -112,3 +113,5 @@ public function destroy($id)
 }
 
 }
+
+

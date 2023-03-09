@@ -28,13 +28,14 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required|max:255',            
+            'content' => 'required',            
             'autor' => 'required',            
         ]);
         $comment = new Comment();
         $comment->content = $request->content;        
         $comment->autor = $request->autor;
         $comment->user_id = $request->user()->id;
+        $comment->forum_id = $request->forum()->id;
 
         $comment->save();
 

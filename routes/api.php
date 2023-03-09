@@ -9,7 +9,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\InformsController;
 use App\Http\Controllers\ConsumptionController;
 use App\Http\Controllers\AuthenticateController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\NotificationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/register', [AuthenticateController::class, 'register'])->name('register');
 Route::post('/login', [AuthenticateController::class, 'login']);
+
+//Google
+Route::middleware('api')->group(function(){  
+Route::get('/login-google', [GoogleController::class, 'redirectToGoogle']);
+Route::get('/google-callback', [GoogleController::class, 'handleGoogleCallback']);
+});
+
+//
 
 //Admin
 
